@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build Ezy — Ship Faster</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  :   #080b10;
+  :   #0d1117;
+  :   #111820;
+  :   #1c2a3a;
+  :   #1a6fd4;
+  :   #2282f0;
+  :   #4da3ff;
+  :   #a8d4ff;
+  :   #e8f2ff;
+  :   #5a7a9a;
+  :   'DM Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.35;
+  pointer-events: none;
+}
+.grid-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  back:ground: radial-gradient(ellipse 70% 60% at 50% 40%, transparent 30%, var(--black) 100%);
+}
+
+nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  padding: 20px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8,11,16,.85);
+  backdrop-filter: blur(12px);
+}
+.logo { font-size: 18px; font-weight: 800; letter-spacing: -.02em; color: var(--bright); }
+.logo span { color: var(--text); }
+
+.nav-links { display: flex; gap: 36px; list-style: none; }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--text); }
+
+button {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  letter-spacing: .03em;
+  cursor: pointer;
+  border: none;
+  transition: background .2s, transform .15s, border-color .2s, color .2s;
+}
+.btn-nav  { background: var(--blue); color: #fff; padding: 10px 24px; font-size: 14px; }
+.btn-nav:hover { background: var(--blue-mid); transform: translateY(-1px); }
+
+.btn-primary {
+  background: var(--blue);
+  color: #fff;
+  padding: 14px 32px;
+  font-size: 15px;
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.08) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform .5s;
+}
+.btn-primary:hover::before { transform: translateX(100%); }
+.btn-primary:hover { background: var(--blue-mid); transform: translateY(-2px); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 14px 32px;
+  font-size: 15px;
+}
+.btn-ghost:hover { border-color: var(--blue); color: var(--bright); transform: translateY(-2px); }
+
+main { position: relative; z-index: 1; }
+
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+  position: relative;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #0a4fa6;
+  background: rgba(26,111,212,.08);
+  padding: 6px 16px;
+  font: 12px/1 var(--mono);
+  color: var(--pale);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+  animation: slideDown .6s ease both;
+}
+.badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--bright);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+h1 {
+  font-size: clamp(72px, 14vw, 160px);
+  font-weight: 800;
+  line-height: .9;
+  letter-spacing: -.04em;
+  animation: slideUp .7s ease .1s both;
+}
+h1 .blue {
+  display: block;
+  color: var(--bright);
+  position: relative;
+}
+h1 .blue::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(77,163,255,.2);
+  transform: translate(4px, 4px);
+  z-index: -1;
+}
+
+.hero-sub {
+  margin-top: 32px;
+  font-size: clamp(16px, 2vw, 20px);
+  color: var(--muted);
+  max-width: 520px;
+  line-height: 1.6;
+  animation: slideUp .7s ease .2s both;
+}
+.hero-sub strong { color: var(--pale); font-weight: 500; }
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 48px;
+  animation: slideUp .7s ease .3s both;
+}
+
+.stats {
+  display: flex;
+  gap: 48px;
+  margin-top: 72px;
+  padding-top: 48px;
+  border-top: 1px solid var(--border);
+  animation: slideUp .7s ease .4s both;
+}
+.stat-num { font-size: 36px; font-weight: 800; color: var(--bright); letter-spacing: -.03em; }
+.stat-label { font: 13px var(--mono); color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: .06em; }
+
+.scroll-hint {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font: 11px var(--mono);
+  color: var(--muted);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  animation: slideUp 1s ease .8s both;
+}
+.scroll-line {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, var(--blue), transparent);
+  animation: scrollLine 1.5s ease-in-out infinite;
+}
+
+.features {
+  padding: 100px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-tag { font: 12px var(--mono); color: var(--bright); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 16px; }
+.section-title { font-size: clamp(32px, 5vw, 52px); font-weight: 800; letter-spacing: -.03em; line-height: 1.05; max-width: 600px; margin-bottom: 64px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.card {
+  background: var(--dark);
+  padding: 40px 36px;
+  position: relative;
+  overflow: hidden;
+  transition: background .3s;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+  opacity: 0;
+  transition: opacity .3s;
+}
+.card:hover { background: var(--surface); }
+.card:hover::before { opacity: 1; }
+.card:hover .card-num { color: var(--muted); }
+
+.card-icon {
+  width: 40px; height: 40px;
+  border: 1px solid #0a4fa6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  color: var(--bright);
+  font-size: 18px;
+}
+.card-num { position: absolute; top: 24px; right: 28px; font: 11px var(--mono); color: #1a2a3a; letter-spacing: .1em; }
+.card-title { font-size: 20px; font-weight: 700; margin-bottom: 12px; letter-spacing: -.01em; }
+.card-desc { font: 300 14px/1.7 var(--mono); color: var(--muted); }
+
+.cta {
+  margin: 0 48px 100px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 80px 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  position: relative;
+  overflow: hidden;
+}
+.cta::before, .cta::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.cta::before { top: -80px; right: -80px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(26,111,212,.12), transparent 70%); }
+.cta::after  { bottom: -60px; left: 40%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(26,111,212,.06), transparent 70%); }
+
+.cta h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 800; letter-spacing: -.03em; line-height: 1.1; margin-bottom: 16px; }
+.cta h2 span { color: var(--bright); }
+.cta p { font: 14px/1.7 var(--mono); color: var(--muted); max-width: 400px; }
+
+.cta-form { display: flex; flex-shrink: 0; }
+.cta-input {
+  background: var(--black);
+  border: 1px solid var(--border);
+  border-right: none;
+  padding: 14px 20px;
+  font: 14px var(--mono);
+  color: var(--text);
+  outline: none;
+  width: 260px;
+  transition: border-color .2s;
+}
+.cta-input::placeholder { color: var(--muted); }
+.cta-input:focus { border-color: var(--blue); }
+.cta-submit {
+  background: var(--blue-mid);
+  color: #fff;
+  border: 1px solid var(--blue-mid);
+  padding: 14px 28px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.cta-submit:hover { background: var(--blue); border-color: var(--blue); }
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+.footer-copy { font: 12px var(--mono); color: var(--muted); letter-spacing: .04em; }
+.footer-links { display: flex; gap: 28px; list-style: none; }
+.footer-links a { font: 12px var(--mono); color: var(--muted); text-decoration: none; letter-spacing: .04em; transition: color .2s; }
+.footer-links a:hover { color: var(--bright); }
+
+@keyframes pulse     { 0%,100% { opacity:1 } 50% { opacity:.3 } }
+@keyframes slideDown { from { opacity:0; transform:translateY(-16px) } to { opacity:1; transform:none } }
+@keyframes slideUp   { from { opacity:0; transform:translateY(24px)  } to { opacity:1; transform:none } }
+@keyframes scrollLine {
+  0%  { transform:scaleY(0); transform-origin:top }
+  50% { transform:scaleY(1); transform-origin:top }
+  51% { transform:scaleY(1); transform-origin:bottom }
+  100%{ transform:scaleY(0); transform-origin:bottom }
+}
+
+@media (max-width: 900px) {
+  nav, .features { padding-inline: 24px; }
+  nav { padding-block: 16px; }
+  .nav-links { display: none; }
+  .grid { grid-template-columns: 1fr; }
+  .stats { gap: 28px; flex-wrap: wrap; }
+  .cta { flex-direction: column; margin-inline: 24px; margin-bottom: 64px; padding: 48px 32px; }
+  .cta-form, .cta-input { width: 100%; }
+  .cta-input { flex: 1; }
+  footer { flex-direction: column; gap: 20px; text-align: center; padding: 28px 24px; }
+  .footer-links { flex-wrap: wrap; justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<nav>
+  <div class="logo">build<span>ezy</span></div>
+  <ul class="nav-links">
+    <li><a href="#">Features</a></li>
+    <li><a href="#">Docs</a></li>
+    <li><a href="#">Pricing</a></li>
+    <li><a href="#">Blog</a></li>
+  </ul>
+  <button class="btn-nav">Get Started</button>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="badge">v2.0 now live — faster deploys</div>
+
+    <h1>
+      <span>Build</span>
+      <span class="blue" data-text="Ezy">Ezy</span>
+    </h1>
+
+    <p class="hero-sub">
+      The platform that gets your product <strong>shipped</strong> — not stuck in setup, config hell, or slow pipelines.
+    </p>
+
+    <div class="hero-actions">
+      <button class="btn-primary">Start Building Free</button>
+      <button class="btn-ghost">View Docs →</button>
+    </div>
+
+    <div class="stats">
+      <div><div class="stat-num">10×</div><div class="stat-label">faster deploys</div></div>
+      <div><div class="stat-num">48k+</div><div class="stat-label">teams shipping</div></div>
+      <div><div class="stat-num">99.9%</div><div class="stat-label">uptime SLA</div></div>
+    </div>
+
+    <div class="scroll-hint"><div class="scroll-line"></div>scroll</div>
+  </section>
+
+  <section class="features">
+    <div class="section-tag">// why build ezy</div>
+    <h2 class="section-title">Everything you need to ship without friction</h2>
+
+    <div class="grid">
+      <div class="card"><span class="card-num">01</span><div class="card-icon">⚡</div><h3 class="card-title">Zero-Config Deploys</h3><p class="card-desc">Push your code. We handle the rest. No YAML archaeology, no DevOps degree required.</p></div>
+      <div class="card"><span class="card-num">02</span><div class="card-icon">⬡</div><h3 class="card-title">Instant Preview URLs</h3><p class="card-desc">Every pull request gets a live preview environment automatically. Share with stakeholders in seconds.</p></div>
+      <div class="card"><span class="card-num">03</span><div class="card-icon">◈</div><h3 class="card-title">Edge-Native Infra</h3><p class="card-desc">Deploy to 60+ global edge locations. Your users get sub-50ms latency, anywhere on Earth.</p></div>
+      <div class="card"><span class="card-num">04</span><div class="card-icon">↻</div><h3 class="card-title">Rollback in One Click</h3><p class="card-desc">Something broke in prod? Revert to any previous deployment instantly with full state integrity.</p></div>
+      <div class="card"><span class="card-num">05</span><div class="card-icon">⊞</div><h3 class="card-title">Built-In Observability</h3><p class="card-desc">Logs, traces, and metrics out of the box. Know what's happening before your users do.</p></div>
+      <div class="card"><span class="card-num">06</span><div class="card-icon">◎</div><h3 class="card-title">Team Collaboration</h3><p class="card-desc">Shared environments, permission controls, and deploy notifications that keep everyone in sync.</p></div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div>
+      <h2>Ready to ship <span>faster</span>?</h2>
+      <p>Join thousands of teams who stopped fighting their toolchain and started building what matters.</p>
+    </div>
+    <div class="cta-form">
+      <input type="email" class="cta-input" placeholder="your@email.com">
+      <button class="cta-submit">Get Early Access</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="logo">build<span style="color:var(--muted)">ezy</span></div>
+  <p class="footer-copy">© 2026 Build Ezy. All rights reserved.</p>
+  <ul class="footer-links">
+    <li><a href="#">Privacy</a></li>
+    <li><a href="#">Terms</a></li>
+    <li><a href="#">Status</a></li>
+    <li><a href="#">Twitter</a></li>
+  </ul>
+</footer>
+
+</body>
+</html>
