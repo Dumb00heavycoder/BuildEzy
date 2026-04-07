@@ -39,7 +39,7 @@ body {
   position: absolute;
   inset: 0;
   background: radial-gradient(ellipse 70% 60% at 50% 40%, transparent 30%, var(--black) 100%);
-}
+} 
 
 nav {
   position: fixed;

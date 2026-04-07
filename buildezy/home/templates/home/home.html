@@ -7,7 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Build Ezy — Ship Faster</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -17,16 +16,15 @@
   <div class="logo">build<span>ezy</span></div>
   <ul class="nav-links">
     <li><a href="#">Features</a></li>
-    <li><a href="#">Docs</a></li>
+   <!-- <li><a href="#">Docs</a></li>
     <li><a href="#">Pricing</a></li>
-    <li><a href="#">Blog</a></li>
+    <li><a href="#">Blog</a></li> -->
   </ul>
-  <button class="btn-nav">Get Started</button>
+  <a href="{% url 'signup' %}" class="btn-nav">Get Started</a> 
 </nav>
 
 <main>
-  <section class="hero">
-    <div class="badge">v2.0 now live — faster deploys</div>
+ <section class="hero">
 
     <h1>
       <span>Build</span>
@@ -34,26 +32,28 @@
     </h1>
 
     <p class="hero-sub">
-      The platform that gets your product <strong>shipped</strong> — not stuck in setup, config hell, or slow pipelines.
+      The platform that gets your product <strong>shipped</strong>
     </p>
 
     <div class="hero-actions">
-      <button class="btn-primary">Start Building Free</button>
-      <button class="btn-ghost">View Docs →</button>
+      <a href="{% url 'signup' %}" class="btn-primary">
+        Start Building Free
+      </a>
+      <!-- <button class="btn-ghost">View Docs →</button> -->
     </div>
 
-    <div class="stats">
+   <!-- <div class="stats">
       <div><div class="stat-num">10×</div><div class="stat-label">faster deploys</div></div>
       <div><div class="stat-num">48k+</div><div class="stat-label">teams shipping</div></div>
       <div><div class="stat-num">99.9%</div><div class="stat-label">uptime SLA</div></div>
-    </div>
+   </div> -->
 
     <div class="scroll-hint"><div class="scroll-line"></div>scroll</div>
   </section>
 
   <section class="features">
-    <div class="section-tag">// why build ezy</div>
-    <h2 class="section-title">Everything you need to ship without friction</h2>
+    <!-- <div class="section-tag">// why build ezy</div> -->
+   <h2 class="section-title">Everything you need to ship without friction</h2>
 
     <div class="grid">
       <div class="card"><span class="card-num">01</span><div class="card-icon">⚡</div><h3 class="card-title">Zero-Config Deploys</h3><p class="card-desc">Push your code. We handle the rest. No YAML archaeology, no DevOps degree required.</p></div>
@@ -64,18 +64,6 @@
       <div class="card"><span class="card-num">06</span><div class="card-icon">◎</div><h3 class="card-title">Team Collaboration</h3><p class="card-desc">Shared environments, permission controls, and deploy notifications that keep everyone in sync.</p></div>
     </div>
   </section>
-
-  <section class="cta">
-    <div>
-      <h2>Ready to ship <span>faster</span>?</h2>
-      <p>Join thousands of teams who stopped fighting their toolchain and started building what matters.</p>
-    </div>
-    <div class="cta-form">
-      <input type="email" class="cta-input" placeholder="your@email.com">
-      <button class="cta-submit">Get Early Access</button>
-    </div>
-  </section>
-</main>
 
 <footer>
   <div class="logo">build<span style="color:var(--muted)">ezy</span></div>

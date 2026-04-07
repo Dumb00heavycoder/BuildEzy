@@ -20,7 +20,7 @@ def login_view(request):
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         
-        if user is not NONE:
+        if user is not None:
             login(request,user)
             return redirect('home') #will change this to dashboard later on
     return render(request, 'accounts/login.html')
