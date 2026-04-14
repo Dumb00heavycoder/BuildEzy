@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Build Ezy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'dashboard/css/dashboard.css' %}">
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<nav>
+  <a href="{% url 'home' %}" class="logo" style="text-decoration: none;">build<span>ezy</span></a>
+  <div class="nav-links">
+    {% if user.is_authenticated %}
+      <span class="user-greeting">Welcome, {{ user.username }}</span>
+      <form action="{% url 'home' %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <!-- Assuming a proper logout route doesn't exist yet, we link to home for now. Feel free to wire it to your auth logout URL! -->
+        <button type="submit" class="btn-ghost">Log Out</button>
+      </form>
+    {% else %}
+      <a href="{% url 'login' %}" class="btn-ghost">Log In</a>
+    {% endif %}
+  </div>
+</nav>
+
+<main>
+    <header class="dashboard-header">
+        <h1 class="dashboard-title">Dashboard</h1>
+        <p class="dashboard-subtitle">Welcome back, let's get back to building.</p>
+    </header>
+
+    <div class="dashboard-grid">
+        <div class="card">
+            <div class="card-icon">⚡</div>
+            <h3 class="card-title">Projects</h3>
+            <p class="card-desc">Manage your existing projects and deploy new applications effortlessly.</p>
+            <a href="#" class="action-link">View Projects →</a>
+        </div>
+        <div class="card">
+            <div class="card-icon">↻</div>
+            <h3 class="card-title">Deployments</h3>
+            <p class="card-desc">Track your recent deployment statuses and environment logs.</p>
+            <a href="#" class="action-link">View Activity →</a>
+        </div>
+        <div class="card">
+            <div class="card-icon">◈</div>
+            <h3 class="card-title">Settings</h3>
+            <p class="card-desc">Configure your account preferences, billing, and API tokens.</p>
+            <a href="#" class="action-link">Manage Settings →</a>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>
