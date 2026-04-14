@@ -1,6 +1,124 @@
-<form method="POST">
-    {% csrf_token %}
-    <input type="text" name="username" placeholder="username">
-    <input type="password" name="password" placeholder="password">
-    <button type="submit">Signup</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up — BuildEzy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'accounts/signup.css' %}">
+</head>
+<body>
+
+  <div class="grid-bg"></div>
+
+  <!-- Glow orbs -->
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+
+  <nav>
+    <a href="{% url 'home' %}" class="logo">build<span>ezy</span></a>
+  </nav>
+
+  <main class="auth-wrapper">
+    <div class="auth-card">
+
+      <div class="card-accent"></div>
+
+      <div class="auth-header">
+        <div class="auth-icon">◈</div>
+        <h1>Start building</h1>
+        <p class="auth-sub">Create your free account — ship faster</p>
+      </div>
+
+      {% if messages %}
+        <div class="msg-box">
+          {% for message in messages %}
+            <p class="msg {{ message.tags }}">{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <form method="POST" class="auth-form" id="signup-form">
+        {% csrf_token %}
+
+        <div class="field-group">
+          <label for="username">Username</label>
+          <div class="input-wrap">
+            <span class="input-icon">◎</span>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="your_username"
+              autocomplete="username"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="email">Email <span class="label-opt">(optional)</span></label>
+          <div class="input-wrap">
+            <span class="input-icon">⬡</span>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="you@example.com"
+              autocomplete="email"
+            >
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">◈</span>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="••••••••"
+              autocomplete="new-password"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="password2">Confirm Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">↻</span>
+            <input
+              type="password"
+              id="password2"
+              name="password2"
+              placeholder="••••••••"
+              autocomplete="new-password"
+              required
+            >
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submit-btn">
+          <span class="btn-text">Create Account</span>
+          <span class="btn-arrow">→</span>
+          <span class="btn-shine"></span>
+        </button>
+      </form>
+
+      <p class="auth-footer-text">
+        Already have an account?
+        <a href="{% url 'login' %}" class="auth-link">Login →</a>
+      </p>
+
+    </div>
+  </main>
+
+  <footer class="auth-footer">
+    <p>© 2026 BuildEzy. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
