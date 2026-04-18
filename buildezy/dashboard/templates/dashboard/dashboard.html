@@ -17,10 +17,9 @@
   <div class="nav-links">
     {% if user.is_authenticated %}
       <span class="user-greeting">Welcome, {{ user.username }}</span>
-      <form action="{% url 'home' %}" method="post" style="display:inline;">
+      <form action="{% url 'logout' %}" method="post" style="display:inline;">
         {% csrf_token %}
-        <!-- Assuming a proper logout route doesn't exist yet, we link to home for now. Feel free to wire it to your auth logout URL! -->
-        <button type="submit" class="btn-ghost">Log Out</button>
+        <button type="submit" class="btn-ghost" style="cursor: pointer;">Log Out</button>
       </form>
     {% else %}
       <a href="{% url 'login' %}" class="btn-ghost">Log In</a>
@@ -30,31 +29,41 @@
 
 <main>
     <header class="dashboard-header">
-        <h1 class="dashboard-title">Dashboard</h1>
-        <p class="dashboard-subtitle">Welcome back, let's get back to building.</p>
+        <h1 class="dashboard-title">My Projects</h1>
+        <p class="dashboard-subtitle">Manage your existing projects or spin up something new.</p>
     </header>
 
     <div class="dashboard-grid">
+        <!-- Create new Project / Add a project card -->
+        <a href="{% url 'create_project' %}" class="card add-project-card" style="text-decoration: none; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px dashed var(--border); background: rgba(13,17,23,.5); transition: border-color .25s, transform .2s;">
+            <div class="card-icon" style="margin-bottom: 12px; font-size: 28px; border: none; background: transparent; animation: none;">+</div>
+            <h3 class="card-title">Add a project</h3>
+            <p class="card-desc" style="text-align: center;">Click here to define your next big idea using AI.</p>
+        </a>
+
+        <!-- Iterate over user projects -->
+        {% for project in projects %}
         <div class="card">
             <div class="card-icon">⚡</div>
-            <h3 class="card-title">Projects</h3>
-            <p class="card-desc">Manage your existing projects and deploy new applications effortlessly.</p>
-            <a href="#" class="action-link">View Projects →</a>
+            <h3 class="card-title">{{ project.name }}</h3>
+            <p class="card-desc">{{ project.description|truncatewords:15 }}</p>
+            <a href="{% url 'project_detail' project.id %}" class="action-link">Open Dashboard →</a>
         </div>
-        <div class="card">
-            <div class="card-icon">↻</div>
-            <h3 class="card-title">Deployments</h3>
-            <p class="card-desc">Track your recent deployment statuses and environment logs.</p>
-            <a href="#" class="action-link">View Activity →</a>
-        </div>
-        <div class="card">
-            <div class="card-icon">◈</div>
-            <h3 class="card-title">Settings</h3>
-            <p class="card-desc">Configure your account preferences, billing, and API tokens.</p>
-            <a href="#" class="action-link">Manage Settings →</a>
-        </div>
+        {% endfor %}
     </div>
 </main>
+
+<style>
+/* Small tweak for the Add Project card */
+.add-project-card:hover { 
+    border-color: var(--blue-mid);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(26,111,212,.15);
+}
+.add-project-card:hover .card-icon {
+    color: var(--bright);
+}
+</style>
 
 </body>
 </html>
